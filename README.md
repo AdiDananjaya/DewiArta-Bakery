@@ -1,16 +1,28 @@
-# React + Vite
+# ArtaDewi Bakery 🥐
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, responsive landing page for **ArtaDewi Bakery**, designed to showcase artisan breads and pastries with seamless WhatsApp integration for orders.
 
-Currently, two official plugins are available:
+## ✨ Preview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+![ArtaDewi Bakery Preview](./public/preview.png)
 
-## React Compiler
+## 🚀 Live Demo
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Check out the live site here: [dewi-arta-bakery.vercel.app](https://dewi-arta-bakery.vercel.app)
 
-## Expanding the ESLint configuration
+## 🛠️ Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **React** - Component-based UI
+- **Vite** - Lightning-fast build tool
+- **Vanilla CSS** - Custom, premium styling
+- **Lucide React** - Modern iconography
+
+## 📱 Features
+
+- **Responsive Design**: optimized for Mobile, Tablet, and Desktop.
+- **WhatsApp Integration**: Easy one-click ordering.
+- **Dynamic Product Carousel**: Highlighting top-selling items.
+- **Google Maps Integration**: Easily find our location.
+
+---
+Created by [AdiDananjaya](https://github.com/AdiDananjaya)
