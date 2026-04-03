@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { MessageCircle, MapPin, Clock, ChevronLeft, ChevronRight, Star } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import HeroCanvas from './components/HeroCanvas';
 
 const MENU_ITEMS = [
   {
@@ -135,7 +136,7 @@ export default function App() {
               className="text-center lg:text-left"
             >
               <motion.h1 variants={fadeIn} className="text-4xl sm:text-5xl lg:text-7xl font-extrabold text-stone-900 tracking-tight drop-shadow-sm mb-6 leading-tight">
-                Dibuat Dengan <span className="text-orange-600">Penuh Cinta</span>
+                Artisanal Bakes, <span className="text-orange-600">Crafted Daily</span>
               </motion.h1>
               <motion.p variants={fadeIn} className="mt-4 max-w-lg mx-auto lg:mx-0 text-lg sm:text-xl text-stone-600 mb-10 font-light tracking-wide">
                 Nikmati roti artisan, kue kering yang lembut, dan kue perayaan kustom yang dipanggang segar setiap pagi khusus untuk Anda.
@@ -164,34 +165,27 @@ export default function App() {
               </motion.div>
             </motion.div>
 
-            {/* Gambar Hero Modern di sebelah kanan */}
+            {/* 3D Interactive Pastry in Hero Canvas */}
             <motion.div 
-              initial={{ opacity: 0, x: 50, rotate: 2 }}
-              animate={{ opacity: 1, x: 0, rotate: 0 }}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, ease: "easeOut" }}
-              className="relative mx-auto lg:ml-auto w-full max-w-md"
+              className="relative mx-auto lg:ml-auto w-full max-w-2xl"
             >
-              {/* Frame gambar dengan bentuk yang modern dan aesthetic */}
-              <div className="relative rounded-t-[4rem] rounded-bl-[4rem] rounded-br-2xl overflow-hidden shadow-2xl border-[6px] border-white bg-stone-100 z-10 w-full aspect-[4/5] sm:aspect-[3/4]">
-                <img 
-                  src="https://images.unsplash.com/photo-1495147466023-ac5c588e2e40?auto=format&fit=crop&q=80&w=1000" 
-                  alt="Kue cantik dan roti sourdough segar" 
-                  className="w-full h-full object-cover scale-105 hover:scale-100 transition-transform duration-700"
-                />
-              </div>
+              <HeroCanvas />
               
-              {/* Elemen melayang statis/animasi (Floating badge) */}
+              {/* Floating Badge (Updated for 3D section) */}
               <motion.div 
                 animate={{ y: [0, -10, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -bottom-6 -left-6 bg-white p-4 rounded-xl shadow-xl border border-stone-100 flex items-center gap-4 z-20 hidden sm:flex"
+                className="absolute bottom-6 -left-6 bg-white/80 backdrop-blur-md p-4 rounded-xl shadow-xl border border-white/50 flex items-center gap-4 z-20 hidden sm:flex"
               >
                 <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
-                  <span className="text-2xl">✨</span>
+                  <span className="text-2xl">🍩</span>
                 </div>
                 <div>
-                  <p className="text-xs text-stone-500 font-medium uppercase tracking-wider">Tiap Hari</p>
-                  <p className="text-stone-900 font-bold">100% Fresh Oven</p>
+                  <p className="text-xs text-stone-500 font-medium uppercase tracking-wider">Interaktif</p>
+                  <p className="text-stone-900 font-bold">Spin the Pastry!</p>
                 </div>
               </motion.div>
             </motion.div>
