@@ -76,6 +76,20 @@ const generateWhatsAppUrl = (itemName) => {
 
 export default function App() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const touchStartX = React.useRef(null);
+
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e) => {
+    if (touchStartX.current === null) return;
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) {
+      diff > 0 ? nextSlide() : prevSlide();
+    }
+    touchStartX.current = null;
+  };
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -199,7 +213,7 @@ export default function App() {
               <motion.div
                 animate={{ y: [0, -10, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -bottom-6 -left-6 bg-white p-4 rounded-xl shadow-xl border border-stone-100 flex items-center gap-4 z-20 hidden sm:flex"
+                className="absolute -bottom-6 -left-6 bg-white p-4 rounded-xl shadow-xl border border-stone-100 flex items-center gap-4 z-20"
               >
                 <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
                   <span className="text-2xl">✨</span>
@@ -234,7 +248,11 @@ export default function App() {
           </motion.div>
 
           {/* Carousel Container */}
-          <div className="relative max-w-4xl mx-auto h-[400px] sm:h-[500px] rounded-3xl overflow-hidden shadow-2xl group">
+          <div
+            className="relative max-w-4xl mx-auto h-[400px] sm:h-[500px] rounded-3xl overflow-hidden shadow-2xl group"
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+          >
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentSlide}
