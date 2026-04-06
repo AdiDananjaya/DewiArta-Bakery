@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { MessageCircle, MapPin, Clock, ChevronLeft, ChevronRight, Star } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// Inject model-viewer script once
-if (typeof window !== 'undefined' && !document.getElementById('model-viewer-script')) {
+// Inject model-viewer script only on non-mobile (saves ~400KB on mobile)
+const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 768;
+if (isDesktop && !document.getElementById('model-viewer-script')) {
   const script = document.createElement('script');
   script.id = 'model-viewer-script';
   script.type = 'module';
@@ -17,42 +18,42 @@ const MENU_ITEMS = [
     name: 'Roti Sourdough Artisan',
     description: 'Roti sourdough yang dipanggang segar dengan pinggiran renyah dan bagian tengah yang lembut dan asam. Difermentasi selama 48 jam.',
     price: 'Rp 45.000',
-    imageUrl: 'https://images.unsplash.com/photo-1585478259615-5553e1a8a25c?auto=format&fit=crop&q=80&w=800',
+    imageUrl: 'https://images.unsplash.com/photo-1585478259615-5553e1a8a25c?auto=format&fit=crop&q=75&w=600',
   },
   {
     id: 2,
     name: 'Croissant Mentega Klasik',
     description: 'Lembut, penuh mentega, dan dipanggang hingga keemasan. Citra rasa asli Paris dalam setiap gigitan.',
     price: 'Rp 25.000',
-    imageUrl: 'https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?auto=format&fit=crop&q=80&w=800',
+    imageUrl: 'https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?auto=format&fit=crop&q=75&w=600',
   },
   {
     id: 3,
     name: 'Kue Cokelat Mewah',
     description: 'Lapisan cokelat yang kaya dan lembut, dilapisi dengan ganache cokelat hitam yang lumer di mulut.',
     price: 'Rp 250.000',
-    imageUrl: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=800',
+    imageUrl: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=75&w=600',
   },
   {
     id: 4,
     name: 'Cinnamon Rolls',
     description: 'Roti gulung kayu manis hangat dengan topping krim keju khas kami yang lezat.',
     price: 'Rp 30.000',
-    imageUrl: 'https://images.unsplash.com/photo-1509365465985-25d11c17e812?auto=format&fit=crop&q=80&w=800',
+    imageUrl: 'https://images.unsplash.com/photo-1509365465985-25d11c17e812?auto=format&fit=crop&q=75&w=600',
   },
   {
     id: 5,
     name: 'Tarte Stroberi',
     description: 'Kulit kue renyah isi custard vanila lembut dan topping potongan stroberi segar.',
     price: 'Rp 35.000',
-    imageUrl: 'https://images.unsplash.com/photo-1483695028939-5bb13f8648b0?auto=format&fit=crop&q=80&w=800',
+    imageUrl: 'https://images.unsplash.com/photo-1483695028939-5bb13f8648b0?auto=format&fit=crop&q=75&w=600',
   },
   {
     id: 6,
     name: 'Kue Perayaan Kustom',
     description: 'Kue kustom berdesain indah untuk ulang tahun, pernikahan, atau momen spesial apa pun.',
     price: 'Mulai dari Rp 350.000',
-    imageUrl: 'https://images.unsplash.com/photo-1562440499-64c9a111f713?auto=format&fit=crop&q=80&w=800',
+    imageUrl: 'https://images.unsplash.com/photo-1562440499-64c9a111f713?auto=format&fit=crop&q=75&w=600',
   },
 ];
 
@@ -76,7 +77,14 @@ const generateWhatsAppUrl = (itemName) => {
 
 export default function App() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
   const touchStartX = React.useRef(null);
+
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
 
   const handleTouchStart = (e) => {
     touchStartX.current = e.touches[0].clientX;
@@ -194,19 +202,30 @@ export default function App() {
               transition={{ duration: 1, ease: "easeOut" }}
               className="relative mx-auto lg:ml-auto w-full max-w-md"
             >
-              {/* model-viewer 3D cake */}
+              {/* 3D Cake (desktop) / Static image (mobile) */}
               <div className="relative rounded-t-[4rem] rounded-bl-[4rem] rounded-br-2xl overflow-hidden shadow-2xl border-[6px] border-white bg-stone-100 z-10 w-full aspect-[4/5] sm:aspect-[3/4]">
-                {/* @ts-ignore */}
-                <model-viewer
-                  src="/Cake3d.glb"
-                  alt="Kue 3D DewiArta Bakery"
-                  auto-rotate
-                  camera-controls
-                  disable-zoom
-                  shadow-intensity="1"
-                  exposure="1.1"
-                  style={{ width: '100%', height: '100%', background: 'transparent' }}
-                />
+                {isMobile ? (
+                  // Lightweight static image on mobile — skip the 16MB GLB download
+                  <img
+                    src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=700"
+                    alt="Kue cantik DewiArta Bakery"
+                    className="w-full h-full object-cover"
+                    fetchpriority="high"
+                  />
+                ) : (
+                  // Interactive 3D model only on desktop
+                  // @ts-ignore
+                  <model-viewer
+                    src="/Cake3d.glb"
+                    alt="Kue 3D DewiArta Bakery"
+                    auto-rotate
+                    camera-controls
+                    disable-zoom
+                    shadow-intensity="1"
+                    exposure="1.1"
+                    style={{ width: '100%', height: '100%', background: 'transparent' }}
+                  />
+                )}
               </div>
 
               {/* Elemen melayang statis/animasi (Floating badge) */}
@@ -266,6 +285,7 @@ export default function App() {
                   src={TOP_SELLERS[currentSlide].imageUrl}
                   alt={TOP_SELLERS[currentSlide].name}
                   className="w-full h-full object-cover"
+                  loading={currentSlide === 0 ? 'eager' : 'lazy'}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-stone-900/90 via-stone-900/30 to-transparent"></div>
                 <div className="absolute bottom-0 left-0 right-0 p-8 sm:p-12 text-white">
@@ -356,6 +376,8 @@ export default function App() {
                   src={item.imageUrl}
                   alt={item.name}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-stone-900/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
               </div>
