@@ -205,7 +205,7 @@ export default function App() {
               <div className="relative rounded-t-[4rem] rounded-bl-[4rem] rounded-br-2xl overflow-hidden shadow-2xl border-[6px] border-white bg-stone-100 z-10 w-full aspect-[4/5] sm:aspect-[3/4]">
                 {/* @ts-ignore */}
                 <model-viewer
-                  src="/Cake3d.glb"
+                  src={isMobile ? "/Cake3d-mobile.glb" : "/Cake3d.glb"}
                   alt="Kue 3D DewiArta Bakery"
                   auto-rotate
                   camera-controls
