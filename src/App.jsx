@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { MessageCircle, MapPin, Clock, ChevronLeft, ChevronRight, Star } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// Inject model-viewer script only on non-mobile (saves ~400KB on mobile)
-const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 768;
-if (isDesktop && !document.getElementById('model-viewer-script')) {
+// Inject model-viewer script on all devices
+if (typeof window !== 'undefined' && !document.getElementById('model-viewer-script')) {
   const script = document.createElement('script');
   script.id = 'model-viewer-script';
   script.type = 'module';
@@ -202,30 +201,19 @@ export default function App() {
               transition={{ duration: 1, ease: "easeOut" }}
               className="relative mx-auto lg:ml-auto w-full max-w-md"
             >
-              {/* 3D Cake (desktop) / Static image (mobile) */}
+              {/* 3D Cake — all devices */}
               <div className="relative rounded-t-[4rem] rounded-bl-[4rem] rounded-br-2xl overflow-hidden shadow-2xl border-[6px] border-white bg-stone-100 z-10 w-full aspect-[4/5] sm:aspect-[3/4]">
-                {isMobile ? (
-                  // Lightweight static image on mobile — skip the 16MB GLB download
-                  <img
-                    src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=700"
-                    alt="Kue cantik DewiArta Bakery"
-                    className="w-full h-full object-cover"
-                    fetchpriority="high"
-                  />
-                ) : (
-                  // Interactive 3D model only on desktop
-                  // @ts-ignore
-                  <model-viewer
-                    src="/Cake3d.glb"
-                    alt="Kue 3D DewiArta Bakery"
-                    auto-rotate
-                    camera-controls
-                    disable-zoom
-                    shadow-intensity="1"
-                    exposure="1.1"
-                    style={{ width: '100%', height: '100%', background: 'transparent' }}
-                  />
-                )}
+                {/* @ts-ignore */}
+                <model-viewer
+                  src="/Cake3d.glb"
+                  alt="Kue 3D DewiArta Bakery"
+                  auto-rotate
+                  camera-controls
+                  disable-zoom
+                  shadow-intensity="1"
+                  exposure="1.1"
+                  style={{ width: '100%', height: '100%', background: 'transparent' }}
+                />
               </div>
 
               {/* Elemen melayang statis/animasi (Floating badge) */}
