@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { MessageCircle, MapPin, Clock, ChevronLeft, ChevronRight, Star } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import HeroCanvas from './components/HeroCanvas';
+
+// Inject model-viewer script once
+if (typeof window !== 'undefined' && !document.getElementById('model-viewer-script')) {
+  const script = document.createElement('script');
+  script.id = 'model-viewer-script';
+  script.type = 'module';
+  script.src = 'https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js';
+  document.head.appendChild(script);
+}
 
 const MENU_ITEMS = [
   {
@@ -127,16 +135,16 @@ export default function App() {
 
         <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
-            
+
             {/* Teks Hero Utama */}
-            <motion.div 
+            <motion.div
               variants={staggerContainer}
               initial="hidden"
               animate="visible"
               className="text-center lg:text-left"
             >
               <motion.h1 variants={fadeIn} className="text-4xl sm:text-5xl lg:text-7xl font-extrabold text-stone-900 tracking-tight drop-shadow-sm mb-6 leading-tight">
-                Artisanal Bakes, <span className="text-orange-600">Crafted Daily</span>
+                Dibuat Dengan <span className="text-orange-600">Penuh Cinta</span>
               </motion.h1>
               <motion.p variants={fadeIn} className="mt-4 max-w-lg mx-auto lg:mx-0 text-lg sm:text-xl text-stone-600 mb-10 font-light tracking-wide">
                 Nikmati roti artisan, kue kering yang lembut, dan kue perayaan kustom yang dipanggang segar setiap pagi khusus untuk Anda.
@@ -152,7 +160,7 @@ export default function App() {
                   Pesan via WhatsApp
                 </a>
               </motion.div>
-              
+
               {/* Badge tambahan untuk detail kecil di sebelah kiri */}
               <motion.div variants={fadeIn} className="mt-10 flex flex-wrap justify-center lg:justify-start gap-4">
                 <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-stone-100">
@@ -165,27 +173,40 @@ export default function App() {
               </motion.div>
             </motion.div>
 
-            {/* 3D Interactive Pastry in Hero Canvas */}
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
+            {/* 3D Cake Hero di sebelah kanan */}
+            <motion.div
+              initial={{ opacity: 0, x: 50, rotate: 2 }}
+              animate={{ opacity: 1, x: 0, rotate: 0 }}
               transition={{ duration: 1, ease: "easeOut" }}
-              className="relative mx-auto lg:ml-auto w-full max-w-2xl"
+              className="relative mx-auto lg:ml-auto w-full max-w-md"
             >
-              <HeroCanvas />
-              
-              {/* Floating Badge (Updated for 3D section) */}
-              <motion.div 
+              {/* model-viewer 3D cake */}
+              <div className="relative rounded-t-[4rem] rounded-bl-[4rem] rounded-br-2xl overflow-hidden shadow-2xl border-[6px] border-white bg-stone-100 z-10 w-full aspect-[4/5] sm:aspect-[3/4]">
+                {/* @ts-ignore */}
+                <model-viewer
+                  src="/Cake3d.glb"
+                  alt="Kue 3D DewiArta Bakery"
+                  auto-rotate
+                  camera-controls
+                  disable-zoom
+                  shadow-intensity="1"
+                  exposure="1.1"
+                  style={{ width: '100%', height: '100%', background: 'transparent' }}
+                />
+              </div>
+
+              {/* Elemen melayang statis/animasi (Floating badge) */}
+              <motion.div
                 animate={{ y: [0, -10, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute bottom-6 -left-6 bg-white/80 backdrop-blur-md p-4 rounded-xl shadow-xl border border-white/50 flex items-center gap-4 z-20 hidden sm:flex"
+                className="absolute -bottom-6 -left-6 bg-white p-4 rounded-xl shadow-xl border border-stone-100 flex items-center gap-4 z-20 hidden sm:flex"
               >
                 <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
-                  <span className="text-2xl">🍩</span>
+                  <span className="text-2xl">✨</span>
                 </div>
                 <div>
-                  <p className="text-xs text-stone-500 font-medium uppercase tracking-wider">Interaktif</p>
-                  <p className="text-stone-900 font-bold">Spin the Pastry!</p>
+                  <p className="text-xs text-stone-500 font-medium uppercase tracking-wider">Tiap Hari</p>
+                  <p className="text-stone-900 font-bold">100% Fresh Oven</p>
                 </div>
               </motion.div>
             </motion.div>
@@ -387,12 +408,12 @@ export default function App() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="bg-stone-800 rounded-2xl p-2 h-64 sm:h-80 overflow-hidden shadow-2xl relative group"
           >
-            <iframe 
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d493.60071429462425!2d114.94150790914863!3d-8.222284068315576!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd1835247d7aaef%3A0x16c429dca8a4846b!2sDewi%20Arta%20Bakery!5e0!3m2!1sen!2sid!4v1775134089343!5m2!1sen!2sid" 
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d493.60071429462425!2d114.94150790914863!3d-8.222284068315576!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd1835247d7aaef%3A0x16c429dca8a4846b!2sDewi%20Arta%20Bakery!5e0!3m2!1sen!2sid!4v1775134089343!5m2!1sen!2sid"
               className="w-full h-full rounded-xl filter grayscale group-hover:grayscale-0 transition-all duration-500"
-              style={{ border: 0 }} 
-              allowFullScreen="" 
-              loading="lazy" 
+              style={{ border: 0 }}
+              allowFullScreen=""
+              loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             ></iframe>
           </motion.div>
