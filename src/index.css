@@ -1,1 +1,47 @@
 @import "tailwindcss";
+
+@theme {
+  --font-archivo: 'Archivo Black', sans-serif;
+  --font-inter: 'Inter', sans-serif;
+  --color-yellow: #FCDD5D;
+  --color-green: #28B474;
+  --color-dark: #000000;
+  --color-bg: #F7F7F7;
+}
+
+@layer utilities {
+  .font-archivo {
+    font-family: var(--font-archivo);
+  }
+  .font-inter {
+    font-family: var(--font-inter);
+  }
+}
+
+body {
+  font-family: var(--font-inter);
+  background-color: var(--color-bg);
+  color: var(--color-dark);
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 15s linear infinite;
+}
+
+/* Custom scrollbar to match aesthetic */
+::-webkit-scrollbar {
+  width: 12px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+  border-left: 2px solid var(--color-dark);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border: 2px solid var(--color-dark);
+}
